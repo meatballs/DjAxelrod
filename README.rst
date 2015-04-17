@@ -11,3 +11,34 @@ DjAxelrod
 A repository to reproduce Axelrod's iterated prisoner's dilemma as a Django based web application.
 
 
+Installation
+============
+
+* Clone this repository to your machine::
+
+    $ git clone https://github.com/Axelrod-Python/DjAxelrod.git
+    $ cd djaxelrod
+
+* Recommended - Create a virtual environment for this project::
+
+    $ <TBC>
+
+* Install the required python libraries::
+
+    $ pip install -r requirements.txt
+
+* Create a database
+
+* Define your local environment::
+
+    $ mv .env.sample .env
+
+Enter the details for your database in the 'DATABASE_URL' key within the .env file
+
+* Generate a secret key::
+
+    $ python -c 'import random; import string; print "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])'
+
+Paste the output into the 'SECRET_KEY' key within the .env file
+
+
