@@ -41,6 +41,10 @@ Enter the details for your database in the 'DATABASE_URL' key within the .env fi
 
 Paste the output into the 'SECRET_KEY' key within the .env file
 
+* Create the initial database content::
+
+    $ python manage.py migrate
+
 * Start the server::
 
     $ python manage.py runserver
