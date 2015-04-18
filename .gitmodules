@@ -1,0 +1,3 @@
+[submodule "provision"]
+	path = provision
+	url = https://github.com/meatballs/vagrant-provisioning.git
