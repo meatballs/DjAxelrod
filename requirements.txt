@@ -5,3 +5,4 @@ django-filter==0.9.2
 djangorestframework==3.1.1
 psycopg2==2.6
 wsgiref==0.1.2
+axelrod==0.0.8
