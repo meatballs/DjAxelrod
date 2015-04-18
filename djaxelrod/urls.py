@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from rest_framework.routers import DefaultRouter
+from django.conf.urls import patterns, include
 from django.contrib import admin
 
-urlpatterns = [
-    # Examples:
-    # url(r'^$', 'DjAxelrod.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+urlpatterns = patterns('', (r'^admin/', include(admin.site.urls)),)
 
-    url(r'^admin/', include(admin.site.urls)),
-]
+router = DefaultRouter()
+urlpatterns += router.urls
