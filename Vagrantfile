@@ -6,5 +6,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision :shell, path: "provision/initial.sh"
     config.vm.provision :shell, path: "provision/zsh/install_zsh.sh"
     config.vm.provision :shell, path: "provision/postgresql/install_postgresql.sh"
+    config.vm.provision :shell, path: "provision/axelrod/install_axelrod.sh"
     config.vm.provision :shell, path: "provision/django/install_django.sh", args: "'djaxelrod'"
 end
