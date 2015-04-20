@@ -78,3 +78,7 @@ Usage
     vagrant up
 
 (This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, however).
+
+* You can connect to the postgresql database on your virtual machine from any client on your host machine. It's running on port 8432 and the username is 'djaxelrod'. e.g.::
+
+    psql -h locahost -p 8432 -U djaxelrod
