@@ -77,8 +77,4 @@ Usage
     vagrant destroy
     vagrant up
 
-(This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, howvever).
-
-
-
-
+(This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, however).
