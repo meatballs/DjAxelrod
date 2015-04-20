@@ -43,5 +43,42 @@ This step will take some time. It has to download the operating system and all t
 
 * Check to see if it's working by pointing your web browser to http://localhost:8000
 
+Usage
+=====
+
+* Your virtual machine is running a web server which will detect any changes that you make to the project's code and show their effect immediately at http://localhost:8000.
+
+* When you have finished working on the project, you can shut down your virtual machine using::
+
+    vagrant halt
+
+* And when you are ready to start work once again, bring the virtual machine back up with::
+
+    vagrant up
+
+* If you need to restart your virtual machine for any reason, you can use::
+
+    vagrant reload
+
+* You can login to your virtual machine and then administer it using::
+
+    vagrant ssh
+
+* You can issue a command to your virtual machine without logging into a shell e.g.::
+
+    vagrant ssh -c "cd /vagrant; echo hello"
+
+* If you need to re-run the setup and configuration of your virtual machine, use::
+
+    vagrant reload --provision
+
+* And, if you break it completely and need to start again, then use::
+
+    vagrant destroy
+    vagrant up
+
+(This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, howvever).
+
+
 
 
