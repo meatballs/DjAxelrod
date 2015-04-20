@@ -14,40 +14,34 @@ A repository to reproduce Axelrod's iterated prisoner's dilemma as a Django base
 Installation
 ============
 
+Pre-Requisites
+--------------
+There are four software tools which you will need on your machine for this project:
+
+* Vagrant: https://www.vagrantup.com/downloads.html
+
+* VirtualBox: https://www.virtualbox.org/wiki/Downloads
+
+* Git: http://git-scm.com/downloads
+
+* SSH: http://www.openssh.com/
+
+Setup
+-----
+
 * Clone this repository to your machine::
 
-    $ git clone https://github.com/Axelrod-Python/DjAxelrod.git
-    $ cd djaxelrod
+    git clone --recursive https://github.com/Axelrod-Python/DjAxelrod.git
+    cd djaxelrod
 
-* Recommended - Create a virtual environment for this project::
+* Create a Virtual Machine to host the DjAxelrod application::
 
-    $ <TBC>
+    cd <path to your cloned repository>
+    vagrant up
 
-* Install the required python libraries::
+This step will take some time. It has to download the operating system and all the tools to install on your new virtual machine.
 
-    $ pip install -r requirements.txt
-
-* Create a database
-
-* Define your local environment::
-
-    $ mv .env.sample .env
-
-Enter the details for your database in the 'DATABASE_URL' key within the .env file
-
-* Generate a secret key::
-
-    $ python -c 'import random; import string; print "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])'
-
-Paste the output into the 'SECRET_KEY' key within the .env file
-
-* Create the initial database content::
-
-    $ python manage.py migrate
-
-* Start the server::
-
-    $ python manage.py runserver
+* Check to see if it's working by pointing your web browser to http://localhost:8000
 
 
 
