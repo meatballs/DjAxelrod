@@ -64,9 +64,9 @@ Usage
 
     vagrant ssh
 
-* You can issue a command to your virtual machine without logging into a shell e.g.::
+* You can issue a command to your virtual machine without logging into a shell. e.g. to run django migrations::
 
-    vagrant ssh -c "cd /vagrant; echo hello"
+    vagrant ssh -c "cd /vagrant; python manage.py migrate"
 
 * If you need to re-run the setup and configuration of your virtual machine, use::
 
