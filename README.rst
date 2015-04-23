@@ -18,9 +18,9 @@ Pre-Requisites
 --------------
 There are four software tools which you will need on your machine for this project:
 
-* Vagrant: https://www.vagrantup.com/downloads.html
+* Vagrant (version 1.7.2 or later): https://www.vagrantup.com/downloads.html
 
-* VirtualBox: https://www.virtualbox.org/wiki/Downloads
+* VirtualBox (version 4.3.26 or later): https://www.virtualbox.org/wiki/Downloads
 
 * Git: http://git-scm.com/downloads
 
