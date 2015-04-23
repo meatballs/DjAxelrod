@@ -14,40 +14,76 @@ A repository to reproduce Axelrod's iterated prisoner's dilemma as a Django base
 Installation
 ============
 
+Pre-Requisites
+--------------
+There are four software tools which you will need on your machine for this project:
+
+* Vagrant (version 1.7.2 or later): https://www.vagrantup.com/downloads.html
+
+* VirtualBox (version 4.3.26 or later): https://www.virtualbox.org/wiki/Downloads
+
+* Git: http://git-scm.com/downloads
+
+* SSH: http://www.openssh.com/
+
+Setup
+-----
+
 * Clone this repository to your machine::
 
-    $ git clone https://github.com/Axelrod-Python/DjAxelrod.git
-    $ cd djaxelrod
+    git clone --recursive https://github.com/Axelrod-Python/DjAxelrod.git
+    cd djaxelrod
 
-* Recommended - Create a virtual environment for this project::
+If you already have a clone of the repository, you may need to refresh its submodules with the following::
 
-    $ <TBC>
+    git submodule init
+    git submodule update
 
-* Install the required python libraries::
+* Create a Virtual Machine to host the DjAxelrod application::
 
-    $ pip install -r requirements.txt
+    cd <path to your cloned repository>
+    vagrant up
 
-* Create a database
+This step will take some time. It has to download the operating system and all the tools to install on your new virtual machine.
 
-* Define your local environment::
+* Check to see if it's working by pointing your web browser to http://localhost:8000
 
-    $ mv .env.sample .env
+Usage
+=====
 
-Enter the details for your database in the 'DATABASE_URL' key within the .env file
+* Your virtual machine is running a web server which will detect any changes that you make to the project's code and show their effect immediately at http://localhost:8000.
 
-* Generate a secret key::
+* When you have finished working on the project, you can shut down your virtual machine using::
 
-    $ python -c 'import random; import string; print "".join([random.SystemRandom().choice(string.digits + string.letters + string.punctuation) for i in range(100)])'
+    vagrant halt
 
-Paste the output into the 'SECRET_KEY' key within the .env file
+* And when you are ready to start work once again, bring the virtual machine back up with::
 
-* Create the initial database content::
+    vagrant up
 
-    $ python manage.py migrate
+* If you need to restart your virtual machine for any reason, you can use::
 
-* Start the server::
+    vagrant reload
 
-    $ python manage.py runserver
+* You can login to your virtual machine and then administer it using::
 
+    vagrant ssh
 
+* You can issue a command to your virtual machine without logging into a shell. e.g. to run django migrations::
 
+    vagrant ssh -c "cd /vagrant; python manage.py migrate"
+
+* If you need to re-run the setup and configuration of your virtual machine, use::
+
+    vagrant reload --provision
+
+* And, if you break it completely and need to start again, then use::
+
+    vagrant destroy
+    vagrant up
+
+(This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, however).
+
+* You can connect to the postgresql database on your virtual machine from any client on your host machine. It's running on port 8432 and the username is 'djaxelrod'. e.g.::
+
+    psql -h locahost -p 8432 -U djaxelrod
