@@ -8,8 +8,9 @@
 DjAxelrod
 =========
 
-A repository to reproduce Axelrod's iterated prisoner's dilemma as a Django based web application.
+A repository to extend the work in our related project, `Axelrod <https://github.com/Axelrod-Python/Axelrod>`_ by creating a Django based web application.
 
+You can read about the background to this work at http://axelrod.readthedocs.org/en/latest/
 
 Installation
 ============
