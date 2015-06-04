@@ -4,5 +4,6 @@
 <tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
 <tr><td>status</td><td>{{ object.status }}</td></tr>
 </table>
+
+<a href="{% url 'core_tournament_update' object.tournament_definition.id %}">Edit Tournament</a>
 {% endblock %}
-<a href="{{object.get_update_url}}">Edit Tournament</a>
