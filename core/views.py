@@ -6,6 +6,7 @@ from django.views.generic import (
     TemplateView
 )
 from django.core.urlresolvers import reverse
+from djaxelrod import tasks
 from .models import Tournament, TournamentDefinition
 from .forms import TournamentForm, TournamentDefinitionForm
 
@@ -26,8 +27,12 @@ class TournamentCreateView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        tournament = Tournament.objects.create(tournament_definition=self.object)
+        tournament = Tournament.objects.create(
+            tournament_definition=self.object)
         tournament.save()
+
+        tasks.tournament_task.apply_async([
+            tournament.pk])
 
         return super(TournamentCreateView, self).form_valid(form)
 
