@@ -9,9 +9,9 @@ DEBUG = bool(os.environ.get('DEBUG', False))
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['::1', '127.0.0.1']
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -20,7 +20,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'core'
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,7 +54,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djaxelrod.wsgi.application'
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config()
+
+if DEBUG:
+
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'axeldb.sqlite',
+    }
+
+    INSTALLED_APPS += ['debug_toolbar',]
+
+else:
+    DATABASES['default'] = dj_database_url.config()
+
 
 LANGUAGE_CODE = 'en-gb'
 
