@@ -8,10 +8,11 @@ from django.conf.urls.static import static
 
 router = DefaultRouter()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
+
     (r'^admin/', include(admin.site.urls)),
     (r'^api/', include(router.urls)),
-    (r'^', include(u'core.urls')),
+    (r'', include(u'social.apps.django_app.urls', namespace='social')),
+    (r'', include(u'core.urls')),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
