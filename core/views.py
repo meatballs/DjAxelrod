@@ -52,3 +52,6 @@ class TournamentUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('core_tournament_list')
+
+class GraphView(TemplateView):
+    template_name = "core/graph_view.html"

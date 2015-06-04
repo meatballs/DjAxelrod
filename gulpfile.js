@@ -5,28 +5,31 @@ var minifyCss = require('gulp-minify-css');
 
 
 var STATIC_DEV = "./static-dev/";
+var STATIC = './static/';
 
 gulp.task('scripts', function() {
   return gulp.src([
   		'lib/jquery/dist/jquery.js', 
-  		'lib/d3.min.js', 
+  		'lib/d3/d3.min.js', 
+  		'lib/colorbrewer/colorbrewer.js', 
   		'lib/bootstrap-sass-official/assets/javascripts/bootstrap.min.js', 
   		'lib/modernizr/modernizr.js', 
+  		'js/vis.js', 
   		], {cwd: STATIC_DEV})
     .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./static/'));
+    .pipe(gulp.dest(STATIC));
 });
 
 gulp.task('sass', function() {
   return gulp.src(STATIC_DEV + 'scss/main.scss')
   	.pipe(sass())
     .pipe(minifyCss())
-    .pipe(gulp.dest('./static/'))
+    .pipe(gulp.dest(STATIC));
 });
 
 // remove all the csv stuff after we add in the csv api
 gulp.task('csv', function() {
-  return gulp.src('**.*.csv').pipe(gulp.dest(STATIC_DEV));
+  return gulp.src(STATIC_DEV + 'csv/*.csv').pipe(gulp.dest(STATIC));
 });
 
 gulp.task('default', ['sass', 'scripts', 'csv'], function() {
