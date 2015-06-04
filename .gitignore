@@ -57,4 +57,13 @@ target/
 .env
 .vagrant/
 .idea/
+
+#npm
+node_modules
+
+#static
+static
+static-dev/lib
+
+#db
 *.sqlite
