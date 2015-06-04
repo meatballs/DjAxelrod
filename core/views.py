@@ -16,6 +16,7 @@ class HomeView(TemplateView):
 
 class TournamentListView(ListView):
     model = Tournament
+    queryset = Tournament.objects.select_related('tournament_definition')
 
 
 class TournamentCreateView(CreateView):
