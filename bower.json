@@ -1,0 +1,23 @@
+{
+  "name": "DjAxelrod",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Axelrod-Python/DjAxelrod",
+  "authors": [
+    "fredkingham <fredkingham@gmail.com>"
+  ],
+  "description": "Django library for Axelrod",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static-dev/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.4",
+    "d3": "~3.5.5",
+    "modernizr": "~2.8.3"
+  }
+}
