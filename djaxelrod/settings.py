@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     'core'
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', ]
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +56,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djaxelrod.wsgi.application'
 
+<<<<<<< HEAD
+=======
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config()
+
+>>>>>>> 4fe7d2224d38fcaa791d461e388f37edb221c55d
 LANGUAGE_CODE = 'en-gb'
 
 TIME_ZONE = 'UTC'
