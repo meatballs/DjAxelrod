@@ -4,3 +4,5 @@ echo "*** Installing NodeJs ***"
 echo "*****************************"
 
 apt-get -y install nodejs npm
+npm install
+bower install
