@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'core'
+    'core',
+    'djaxelrod',
 ]
 
 if DEBUG:
@@ -82,4 +83,16 @@ if DEBUG:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+#
+# Celery settings
+#
 
+BROKER_URL = 'redis://localhost:6379/0'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://'
+#CELERY_TASK_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'djaxelrod_default'
+CELERY_DEFAULT_EXCHANGE = 'djaxelrod_default'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
+CELERY_DEFAULT_ROUTING_KEY = 'djaxelrod_default'
+#CELERY_DISABLE_RATE_LIMITS = True
