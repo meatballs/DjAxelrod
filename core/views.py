@@ -29,21 +29,3 @@ class TournamentDetailView(DetailView):
 class TournamentUpdateView(UpdateView):
     model = Tournament
     form_class = TournamentForm
-
-
-class TournamentDefinitionListView(ListView):
-    model = TournamentDefinition
-
-
-class TournamentDefinitionCreateView(CreateView):
-    model = TournamentDefinition
-    form_class = TournamentDefinitionForm
-
-
-class TournamentDefinitionDetailView(DetailView):
-    model = TournamentDefinition
-
-
-class TournamentDefinitionUpdateView(UpdateView):
-    model = TournamentDefinition
-    form_class = TournamentDefinitionForm
