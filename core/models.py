@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import DateTimeField
@@ -41,6 +42,37 @@ class Tournament(models.Model):
 
     def get_update_url(self):
         return reverse('core_tournament_update', args=(self.id,))
+
+    def run(self):
+
+        if self.status != Tournament.PENDING:
+            raise Exception(u'[tournament %d, current status: %s] SKIPPED !' % (
+                self.id, self.get_status_display()))
+
+        try:
+            self.status = Tournament.RUNNING
+            self.save(update_fields=['status', ])
+
+            start = datetime.now()
+
+            # TODO: replace with real work
+            print 'Some work is going on for tournament [%d] ...' % self.pk
+            import time
+            time.sleep(5)
+
+            end = datetime.now()
+            duration = (end - start).seconds
+
+            # TODO: save duration
+            #self.duration = duration
+            self.status = Tournament.SUCCESS
+            self.save(update_fields=['status', ])
+
+        except Exception, e:
+            # log errors and set tournament status to aborted
+            self.status = Tournament.FAILED
+            self.save(update_fields=['status', ])
+            # TODO: eventually save error message in model
 
 
 class TournamentDefinition(models.Model):
