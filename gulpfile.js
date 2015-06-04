@@ -21,4 +21,6 @@ gulp.task('sass', function() {
     .pipe(gulp.dest('./static/'))
 });
 
-gulp.task('default', ['sass', 'scripts']);
+gulp.task('default', ['sass', 'scripts'], function() {
+    gulp.watch([STATIC_DEV + '**/*.scss', STATIC_DEV + '**/*.js'], ['sass', 'scripts']);
+});
