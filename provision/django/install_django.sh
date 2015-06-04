@@ -19,6 +19,7 @@ apt-get install -y libpq-dev python-dev
 
 # install python packages
 pip install -r /vagrant/requirements.txt
+pip install django-debug-toolbar
 
 # Set environment variables
 sudo echo "DEBUG=TRUE" >> /etc/environment
