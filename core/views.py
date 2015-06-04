@@ -1,6 +1,16 @@
-from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic import (
+    DetailView,
+    ListView,
+    UpdateView,
+    CreateView,
+    TemplateView
+)
 from .models import Tournament, TournamentDefinition
 from .forms import TournamentForm, TournamentDefinitionForm
+
+
+class HomeView(TemplateView):
+    template_name = 'core/home.html'
 
 
 class TournamentListView(ListView):
@@ -37,4 +47,3 @@ class TournamentDefinitionDetailView(DetailView):
 class TournamentDefinitionUpdateView(UpdateView):
     model = TournamentDefinition
     form_class = TournamentDefinitionForm
-
