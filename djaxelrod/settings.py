@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     'core'
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', ]
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,19 +57,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djaxelrod.wsgi.application'
 
 DATABASES = {}
-
-if DEBUG:
-
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'axeldb.sqlite',
-    }
-
-    INSTALLED_APPS += ['debug_toolbar',]
-
-else:
-    DATABASES['default'] = dj_database_url.config()
-
+DATABASES['default'] = dj_database_url.config()
 
 LANGUAGE_CODE = 'en-gb'
 
