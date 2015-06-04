@@ -9,17 +9,22 @@ from django.db.models import TextField
 
 class Tournament(models.Model):
 
+    PENDING = 0
+    RUNNING = 0
+    SUCCESS = 0
+    FAILED = 0
+
     STATUS_CHOICES = (
-        (0, 'PENDING'),
-        (1, 'RUNNING'),
-        (2, 'SUCCESS'),
-        (3, 'FAILED'),
+        (PENDING, 'PENDING'),
+        (RUNNING, 'RUNNING'),
+        (SUCCESS, 'SUCCESS'),
+        (FAILED, 'FAILED'),
     )
 
     # Fields
     created = DateTimeField(auto_now_add=True, editable=False)
     last_updated = DateTimeField(auto_now=True, editable=False)
-    status = IntegerField(choices=STATUS_CHOICES)
+    status = IntegerField(choices=STATUS_CHOICES, default=PENDING)
 
     # Relationship Fields
     tournament_definition = ForeignKey('core.TournamentDefinition',)
