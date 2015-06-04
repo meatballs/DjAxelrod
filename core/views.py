@@ -37,6 +37,7 @@ class TournamentCreateView(CreateView):
 
 class TournamentDetailView(DetailView):
     model = Tournament
+    queryset = Tournament.objects.select_related('tournament_definition')
 
 
 class TournamentUpdateView(UpdateView):
