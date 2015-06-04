@@ -3,7 +3,7 @@
     // the visualisation
     var svg;
     var container;
-    var cheatingCsvFile = 'cheating_results.csv';
+    var cheatingCsvFile = '/static/cheating_results.csv';
 
     // get the size of the visualisation element
     var width = document.getElementById('vis').clientWidth;
@@ -199,7 +199,7 @@
     // load results from the specified file
     var load_results = function(results) {
         
-        d3.csv(results + '.csv', function(error, data) {
+        d3.csv("/static/" + results + '.csv', function(error, data) {
 
             // extract the list of players
             players = data.map(function(d) {

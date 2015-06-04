@@ -4,7 +4,8 @@ from .views import (
     TournamentListView,
     TournamentDetailView,
     TournamentCreateView,
-    TournamentUpdateView
+    TournamentUpdateView,
+    GraphView,
 )
 
 urlpatterns = patterns(
@@ -33,5 +34,10 @@ urlpatterns = patterns(
         r'^tournament/(?P<pk>\S+)/$',
         TournamentUpdateView.as_view(),
         name='core_tournament_update'
+    ),
+    url(
+        r'^graph_view/$',
+        GraphView.as_view(),
+        name='core_graph_view'
     ),
 )
