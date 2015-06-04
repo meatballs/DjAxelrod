@@ -25,12 +25,12 @@ urlpatterns = patterns(
         name='core_tournament_create'
     ),
     url(
-        r'^tournament/(?P<id>\S+)/edit/$',
+        r'^tournament/(?P<pk>\S+)/edit/$',
         TournamentDetailView.as_view(),
         name='core_tournament_detail'
     ),
     url(
-        r'^tournament/(?P<id>\S+)/$',
+        r'^tournament/(?P<pk>\S+)/$',
         TournamentUpdateView.as_view(),
         name='core_tournament_update'
     ),

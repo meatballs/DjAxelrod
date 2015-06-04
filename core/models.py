@@ -10,9 +10,9 @@ from django.db.models import TextField
 class Tournament(models.Model):
 
     PENDING = 0
-    RUNNING = 0
-    SUCCESS = 0
-    FAILED = 0
+    RUNNING = 1
+    SUCCESS = 2
+    FAILED = 3
 
     STATUS_CHOICES = (
         (PENDING, 'PENDING'),
