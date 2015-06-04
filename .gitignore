@@ -67,3 +67,5 @@ static-dev/lib
 
 #db
 *.sqlite
+
+*local_settings.py
