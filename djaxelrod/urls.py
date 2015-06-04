@@ -4,7 +4,12 @@ from rest_framework.routers import DefaultRouter
 from django.conf.urls import patterns, include
 from django.contrib import admin
 
-urlpatterns = patterns('', (r'^admin/', include(admin.site.urls)),)
-
 router = DefaultRouter()
-urlpatterns += router.urls
+
+urlpatterns = patterns('',
+    (r'^admin/', include(admin.site.urls)),
+    (r'^api/', include(router.urls)),
+    (r'^', include(u'core.urls')),
+)
+
+
