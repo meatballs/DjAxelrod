@@ -6,8 +6,13 @@
     var cheatingCsvFile = '/static/cheating_results.csv';
 
     // get the size of the visualisation element
-    var width = document.getElementById('vis').clientWidth;
-    var height = document.getElementById('vis').clientHeight;
+    var visEl = document.getElementById('vis');
+    if (!visEl) {
+        return;
+    }
+
+    var width = visEl.clientWidth,
+        height = visEl.clientHeight;
 
     // some padding around the visualisation
     var padding = {'bottom': 170, 'left': 90, 'right': 40, 'top': 40};

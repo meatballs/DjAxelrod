@@ -29,6 +29,8 @@ sudo echo "DATABASE_URL='postgres://$DJANGO_PROJECT:$DJANGO_PROJECT@localhost/$D
 export DATABASE_URL
 export DEBUG
 export SECRET_KEY
+export SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+export SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 
 # Create database
 user_exists=`sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DJANGO_PROJECT'"`
