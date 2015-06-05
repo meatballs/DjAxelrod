@@ -21,6 +21,7 @@
     "modernizr": "~2.8.3"
   },
   "devDependencies": {
-    "colorbrewer": "~1.0.0"
+    "colorbrewer": "~1.0.0",
+    "bootstrap-multiselect": "~0.9.13"
   }
 }

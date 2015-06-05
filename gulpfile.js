@@ -13,8 +13,10 @@ gulp.task('scripts', function() {
   		'lib/d3/d3.min.js', 
   		'lib/colorbrewer/colorbrewer.js', 
   		'lib/bootstrap-sass-official/assets/javascripts/bootstrap.min.js', 
+      'lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
   		'lib/modernizr/modernizr.js', 
-  		'js/vis.js', 
+      'js/vis.js', 
+  		'js/main.js', 
   		], {cwd: STATIC_DEV})
     .pipe(concat('scripts.js'))
     .pipe(gulp.dest(STATIC));
