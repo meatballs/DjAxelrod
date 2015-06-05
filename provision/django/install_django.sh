@@ -11,12 +11,9 @@ else
   DJANGO_PROJECT=$1
 fi
 
-# install pip
-apt-get install python-setuptools
+# install packages
+apt-get install python-setuptools libpq-dev python-dev g++ redis-server
 easy_install pip
-
-# install packages for python-postgresql connectivity
-apt-get install -y libpq-dev python-dev g++
 
 # install python packages
 pip install -r /vagrant/requirements.txt
