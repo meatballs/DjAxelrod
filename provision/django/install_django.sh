@@ -41,4 +41,4 @@ python manage.py migrate
 
 # configure the django dev server as an upstart daemon
 cp /vagrant/provision/django/django-server.conf /etc/init
-start django-server
+restart django-server
