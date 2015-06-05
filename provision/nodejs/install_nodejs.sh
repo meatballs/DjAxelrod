@@ -6,3 +6,4 @@ echo "*****************************"
 apt-get -y install nodejs npm
 npm install
 bower install
+npm install -g gulp
