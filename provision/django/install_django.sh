@@ -31,6 +31,8 @@ sudo echo "DATABASE_URL='postgres://$DJANGO_PROJECT:$DJANGO_PROJECT@localhost/$D
 export DATABASE_URL
 export DEBUG
 export SECRET_KEY
+export SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+export SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 
 # Create database
 su postgres -c "createuser -w -d -r -s $DJANGO_PROJECT"
