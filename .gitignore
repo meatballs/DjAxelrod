@@ -69,3 +69,6 @@ static-dev/lib
 *.sqlite
 
 *local_settings.py
+
+#redis
+dump.rdb

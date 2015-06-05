@@ -13,8 +13,12 @@ sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/po
 echo "host    all             all             0.0.0.0/0               md5" | sudo tee -a /etc/postgresql/$PG_VERSION/main/pg_hba.conf
 
 # Create the 'vagrant' db user
-su postgres -c "createuser -s vagrant"
-sudo -u postgres psql -c "CREATE ROLE root LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
+user_exists=`sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='vagrant'"`
+if [[ $user_exists != "1" ]]
+then
+    su postgres -c "createuser -s vagrant"
+    sudo -u postgres psql -c "CREATE ROLE root LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;"
+fi
 
 # Restart the service so the changes take effect
 sudo service postgresql restart

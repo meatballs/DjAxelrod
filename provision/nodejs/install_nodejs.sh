@@ -3,6 +3,8 @@ echo "*****************************"
 echo "*** Installing NodeJs ***"
 echo "*****************************"
 
-apt-get -y install nodejs npm
+apt-get -y install nodejs npm nodejs-legacy
 npm install
-bower install
+npm install -g bower
+bower install -s
+npm install -g gulp

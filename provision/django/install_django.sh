@@ -11,11 +11,9 @@ else
   DJANGO_PROJECT=$1
 fi
 
-# install pip
-apt-get install -y python-pip
-
-# install packages for python-postgresql connectivity
-apt-get install -y libpq-dev python-dev
+# install packages
+apt-get install python-setuptools libpq-dev python-dev g++ redis-server
+easy_install pip
 
 # install python packages
 pip install -r /vagrant/requirements.txt
@@ -35,9 +33,21 @@ export SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
 export SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 
 # Create database
-su postgres -c "createuser -w -d -r -s $DJANGO_PROJECT"
+user_exists=`sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DJANGO_PROJECT'"`
+db_exists=`sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='$DJANGO_PROJECT'"`
+
+if [[ $user_exists != "1" ]]
+then
+    su postgres -c "createuser -w -d -r -s $DJANGO_PROJECT"
+fi
+
 sudo -u postgres psql -c "ALTER USER $DJANGO_PROJECT WITH PASSWORD '$DJANGO_PROJECT';"
-su postgres -c "createdb -O $DJANGO_PROJECT $DJANGO_PROJECT"
+
+if [[ $db_exists != "1" ]]
+then
+    su postgres -c "createdb -O $DJANGO_PROJECT $DJANGO_PROJECT"
+fi
+
 cd /vagrant
 python manage.py migrate
 
