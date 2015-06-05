@@ -6,6 +6,7 @@ from django.views.generic import (
     TemplateView
 )
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 from djaxelrod import tasks
 from .models import Tournament, TournamentDefinition
 from .forms import TournamentForm, TournamentDefinitionForm
@@ -38,6 +39,11 @@ class TournamentCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('core_tournament_list')
+
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(TournamentCreateView, cls).as_view(**initkwargs)
+        return login_required(view)
 
 
 class TournamentDetailView(DetailView):
