@@ -32,13 +32,8 @@ Setup
 
 * Clone this repository to your machine::
 
-    git clone --recursive https://github.com/Axelrod-Python/DjAxelrod.git
+    git clone https://github.com/Axelrod-Python/DjAxelrod.git
     cd djaxelrod
-
-If you already have a clone of the repository, you may need to refresh its submodules with the following::
-
-    git submodule init
-    git submodule update
 
 * Create a Virtual Machine to host the DjAxelrod application::
 
