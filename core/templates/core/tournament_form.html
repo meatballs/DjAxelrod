@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container">
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" name="submit" value="Start Tournament" />
-</form>
+	<h1>Create a new tournament</h1>
+	<form action="" method="post">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="tournament_name">Name</label>
+			<input type="text" class="form-control" id="tournament_name">
+		</div>
+		<div class="form-group">
+			<label for="tournament_players">Players</label>
+			<select multiple class="form-control">
+				{% for choice in form.players.field.choices %}
+				<option value="{{ choice.0 }}">{{ choice.1 }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<button type="submit" class="btn btn-default">Start Tournament</button>
+	</form>
 
+</div>
 {% endblock %}

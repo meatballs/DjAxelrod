@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<table>
-<tr><td>name</td><td>{{ object.tournament_definition.name }}</td></tr>
-<tr><td>players</td><td>{{ object.tournament_definition.players }}</td></tr>
-<tr><td>created</td><td>{{ object.created }}</td></tr>
-<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-<tr><td>status</td><td>{{ object.get_status_display }}</td></tr>
-</table>
+<div class="container">
 
-<a href="{% url 'core_tournament_update' object.tournament_definition.id %}">Edit Tournament</a>
+	<table>
+	<tr><td>name</td><td>{{ object.tournament_definition.name }}</td></tr>
+	<tr><td>players</td><td>{{ object.tournament_definition.players }}</td></tr>
+	<tr><td>created</td><td>{{ object.created }}</td></tr>
+	<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
+	<tr><td>status</td><td>{{ object.get_status_display }}</td></tr>
+	</table>
+
+	<a href="{% url 'core_tournament_update' object.tournament_definition.id %}">Edit Tournament</a>
+</div>
 {% endblock %}

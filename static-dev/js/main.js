@@ -1,5 +1,5 @@
 (function() {
 	$(document).ready(function() {
-		$('.multiselect').multiselect();
+		$('select[multiple]').multiselect();
 	});
 })();
