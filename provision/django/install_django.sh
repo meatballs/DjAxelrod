@@ -12,6 +12,7 @@ else
 fi
 
 # install pip
+apt-get install python-setuptools
 easy_install pip
 
 # install packages for python-postgresql connectivity
