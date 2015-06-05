@@ -7,6 +7,7 @@ from django.views.generic import (
 )
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from djaxelrod import tasks
 from .models import Tournament, TournamentDefinition
 from .forms import TournamentForm, TournamentDefinitionForm
@@ -25,6 +26,13 @@ class TournamentCreateView(CreateView):
     model = TournamentDefinition
     form_class = TournamentDefinitionForm
     template_name = 'core/tournament_form.html'
+
+    def get_initial(self):
+        now = timezone.now()
+        return {
+            'name': u"{0.first_name}{0.last_name}-{1}".format(
+                self.request.user, now.isoformat())
+        }
 
     def form_valid(self, form):
         self.object = form.save()
@@ -58,6 +66,7 @@ class TournamentUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('core_tournament_list')
+
 
 class GraphView(TemplateView):
     template_name = "core/graph_view.html"
