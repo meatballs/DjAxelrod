@@ -6,5 +6,5 @@ echo "*****************************"
 apt-get -y install nodejs npm nodejs-legacy
 npm install
 npm install -g bower
-bower install
+bower install -s
 npm install -g gulp
