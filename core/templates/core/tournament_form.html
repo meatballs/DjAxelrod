@@ -7,7 +7,7 @@
 		{% csrf_token %}
 		<div class="form-group">
 			<label for="tournament_name">Name</label>
-			<input type="text" class="form-control" id="tournament_name">
+			<input type="text" class="form-control" id="tournament_name" value="{{ form.name.value }}">
 		</div>
 		<div class="form-group">
 			<label for="tournament_players">Players</label>
