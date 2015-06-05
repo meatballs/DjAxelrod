@@ -16,7 +16,7 @@ apt-get install python-setuptools
 easy_install pip
 
 # install packages for python-postgresql connectivity
-apt-get install -y libpq-dev python-dev
+apt-get install -y libpq-dev python-dev g++
 
 # install python packages
 pip install -r /vagrant/requirements.txt
@@ -54,4 +54,4 @@ python manage.py migrate
 
 # configure the django dev server as an upstart daemon
 cp /vagrant/provision/django/django-server.conf /etc/init
-restart django-server
+start django-server
