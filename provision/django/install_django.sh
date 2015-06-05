@@ -12,7 +12,7 @@ else
 fi
 
 # install packages
-apt-get install python-setuptools libpq-dev python-dev g++ redis-server
+apt-get install -y python-setuptools libpq-dev python-dev g++ redis-server
 easy_install pip
 
 # install python packages
