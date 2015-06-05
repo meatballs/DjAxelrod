@@ -12,7 +12,7 @@ else
 fi
 
 # install pip
-apt-get install -y python-pip
+easy_install pip
 
 # install packages for python-postgresql connectivity
 apt-get install -y libpq-dev python-dev
