@@ -3,7 +3,12 @@
 <div class="container">
 	<ul>
 	{% for object in object_list %}
-	<li><a href="{% url 'core_tournament_detail' object.id %}" name="object.tournament_definition.name">{{ object.tournament_definition.name }}</a> ({{ object.last_updated }} - {{ object.get_status_display }})</li>
+	<li>
+		<a href="{% url 'core_tournament_detail' object.id %}" name="object.tournament_definition.name">{{ object.tournament_definition.name }}</a> ({{ object.last_updated }} - {{ object.get_status_display }})
+		{% if 1 or object.status == '2' %}
+			<div>{{ object.results }}</div>
+		{% endif %}
+	</li>
 	{% endfor %}
 	</ul>
 </div>

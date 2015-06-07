@@ -1,11 +1,11 @@
 from django import forms
-from axelrod.strategies import _strategies
+from axelrod import strategies
 from .models import Tournament, TournamentDefinition
 
 ALL_STRATEGIES = (
-    _strategies.basic_strategies +
-    _strategies.ordinary_strategies +
-    _strategies.cheating_strategies
+    strategies.basic_strategies +
+    strategies.ordinary_strategies +
+    strategies.cheating_strategies
 )
 
 STRATEGY_CHOICES = [(a.__name__, a.__name__) for a in ALL_STRATEGIES]
@@ -25,3 +25,6 @@ class TournamentDefinitionForm(forms.ModelForm):
     class Meta:
         model = TournamentDefinition
         fields = ['name', 'players']
+
+    def clean_players(self):
+        return ",".join(self.cleaned_data['players'])
