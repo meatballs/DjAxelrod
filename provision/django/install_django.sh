@@ -20,7 +20,7 @@ pip install -r /vagrant/requirements.txt
 pip install django-debug-toolbar
 
 # Set environment variables
-if [[ ! -f /etc/environment ]]
+if ! grep -Fxq "DEBUG" /etc/environment
 then
     sudo echo "DEBUG=TRUE" >> /etc/environment
     sudo echo "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='237400346062-fgmcf2r36vgqfh0nuisd8ofi8ot5nrp4.apps.googleusercontent.com'" >> /etc/environment
