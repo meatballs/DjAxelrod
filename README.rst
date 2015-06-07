@@ -32,13 +32,8 @@ Setup
 
 * Clone this repository to your machine::
 
-    git clone --recursive https://github.com/Axelrod-Python/DjAxelrod.git
+    git clone https://github.com/Axelrod-Python/DjAxelrod.git
     cd djaxelrod
-
-If you already have a clone of the repository, you may need to refresh its submodules with the following::
-
-    git submodule init
-    git submodule update
 
 * Create a Virtual Machine to host the DjAxelrod application::
 
@@ -46,6 +41,11 @@ If you already have a clone of the repository, you may need to refresh its submo
     vagrant up
 
 This step will take some time. It has to download the operating system and all the tools to install on your new virtual machine.
+
+* Run Celery::
+
+    vagrant ssh -c "cd /vagrant; celery -A djaxelrod worker -l info"
+
 
 * Check to see if it's working by pointing your web browser to http://localhost:8000
 
@@ -61,6 +61,10 @@ Usage
 * And when you are ready to start work once again, bring the virtual machine back up with::
 
     vagrant up
+
+  then run Celery::
+
+    vagrant ssh -c "cd /vagrant; celery -A djaxelrod worker -l info"
 
 * If you need to restart your virtual machine for any reason, you can use::
 
@@ -82,6 +86,10 @@ Usage
 
     vagrant destroy
     vagrant up
+
+  then run Celery::
+
+    vagrant ssh -c "cd /vagrant; celery -A djaxelrod worker -l info"
 
 (This will be slightly quicker than the first time as it will not need to download the operating system. It will still take some time, however).
 

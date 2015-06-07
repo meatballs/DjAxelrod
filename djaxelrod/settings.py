@@ -18,9 +18,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'rest_framework',
-    'core'
+    'core',
+    'djaxelrod',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', ]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -46,6 +51,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -54,19 +61,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djaxelrod.wsgi.application'
 
 DATABASES = {}
-
-if DEBUG:
-
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'axeldb.sqlite',
-    }
-
-    INSTALLED_APPS += ['debug_toolbar',]
-
-else:
-    DATABASES['default'] = dj_database_url.config()
-
+DATABASES['default'] = dj_database_url.config()
 
 LANGUAGE_CODE = 'en-gb'
 
@@ -81,9 +76,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static-dev/' if DEBUG else '/static/'
+# STATIC_URL = '/static-dev/' if DEBUG else '/static/'
+STATIC_URL = '/static/'
 
 if DEBUG:
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static-dev'),
+        os.path.join(BASE_DIR, 'static'),
     )
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+#
+# Celery settings
+#
+
+BROKER_URL = 'redis://localhost:6379/0'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://'
+#CELERY_TASK_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'djaxelrod_default'
+CELERY_DEFAULT_EXCHANGE = 'djaxelrod_default'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
+CELERY_DEFAULT_ROUTING_KEY = 'djaxelrod_default'
+#CELERY_DISABLE_RATE_LIMITS = True
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+
+LOGIN_URL = '/login/google-oauth2'
