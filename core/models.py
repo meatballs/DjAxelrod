@@ -67,7 +67,11 @@ class Tournament(models.Model):
                 getattr(axelrod, strategy_str)()
                 for strategy_str in players
             ]
-            tournament_runner = axelrod.Tournament(strategies)
+            tournament_runner = axelrod.Tournament(
+                players=strategies,
+                turns=self.tournament_definition.turns,
+                repetitions=self.tournament_definition.repetitions,
+                noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
             results = [
@@ -118,8 +122,5 @@ class TournamentDefinition(models.Model):
     def get_absolute_url(self):
         return reverse('core_tournamentdefinition_detail', args=(self.id,))
 
-
     def get_update_url(self):
         return reverse('core_tournamentdefinition_update', args=(self.id,))
-
-
