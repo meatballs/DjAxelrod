@@ -8,3 +8,12 @@ npm install
 npm install -g bower
 su -c "bower install -S" vagrant
 npm install -g gulp
+
+# configure Gulp as an upstart daemon
+cp /vagrant/provision/nodejs/gulp-server.conf /etc/init
+if (( $(ps -ef | grep -v grep | grep "gulp" | wc -l) > 0 ))
+then
+    restart gulp-server
+else
+    start gulp-server
+fi
