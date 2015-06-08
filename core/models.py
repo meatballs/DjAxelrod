@@ -6,7 +6,8 @@ from django.db.models import (
     CharField,
     ForeignKey,
     IntegerField,
-    TextField
+    TextField,
+    FloatField,
 )
 from jsonfield import JSONField
 import axelrod
@@ -103,6 +104,9 @@ class TournamentDefinition(models.Model):
     name = CharField(max_length=255)
     created = DateTimeField(auto_now_add=True, editable=False)
     last_updated = DateTimeField(auto_now=True, editable=False)
+    turns = IntegerField()
+    repetitions = IntegerField()
+    noise = FloatField()
     players = TextField()
 
     class Meta:
