@@ -27,7 +27,7 @@ class TournamentDefinitionForm(forms.ModelForm):
 
     class Meta:
         model = TournamentDefinition
-        fields = ['name', 'turns', 'repetitions', 'players']
+        fields = ['name', 'turns', 'repetitions', 'noise', 'players']
 
     def clean_players(self):
         return ",".join(self.cleaned_data['players'])
