@@ -63,3 +63,11 @@ else
     start django-server
 fi
 
+# configure Gulp as an upstart daemon
+cp /vagrant/provision/django/gulp-server.conf /etc/init
+if (( $(ps -ef | grep -v grep | grep "gulp" | wc -l) > 0 ))
+then
+    restart gulp-server
+else
+    start gulp-server
+fi
