@@ -70,7 +70,8 @@ class Tournament(models.Model):
             tournament_runner = axelrod.Tournament(
                 players=strategies,
                 turns=self.tournament_definition.turns,
-                repetitions=self.tournament_definition.repetitions)
+                repetitions=self.tournament_definition.repetitions,
+                noise=self.tournament_definitions.noise)
             result_set = tournament_runner.play()
 
             results = [
