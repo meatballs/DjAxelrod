@@ -63,3 +63,11 @@ else
     start django-server
 fi
 
+# configure celery as an upstart daemon
+cp /vagrant/provision/django/celery-server.conf /etc/init
+if (( $(ps -ef | grep -v grep | grep "celery -A djaxelrod" | wc -l) > 0 ))
+then
+    restart celery-server
+else
+    start celery-server
+fi
