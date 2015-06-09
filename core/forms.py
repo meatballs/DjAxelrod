@@ -18,13 +18,16 @@ class TournamentForm(forms.ModelForm):
 
 
 class TournamentDefinitionForm(forms.ModelForm):
+    turns = forms.IntegerField(initial=200)
+    repetitions = forms.IntegerField(initial=10)
+    noise = forms.FloatField(initial=0)
     players = forms.MultipleChoiceField(
         choices=STRATEGY_CHOICES,
         widget=forms.SelectMultiple(attrs={'class': 'multiselect'}))
 
     class Meta:
         model = TournamentDefinition
-        fields = ['name', 'players']
+        fields = ['name', 'turns', 'repetitions', 'noise', 'players']
 
     def clean_players(self):
         return ",".join(self.cleaned_data['players'])

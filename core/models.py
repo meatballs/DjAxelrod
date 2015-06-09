@@ -6,7 +6,8 @@ from django.db.models import (
     CharField,
     ForeignKey,
     IntegerField,
-    TextField
+    TextField,
+    FloatField,
 )
 from jsonfield import JSONField
 import axelrod
@@ -66,7 +67,11 @@ class Tournament(models.Model):
                 getattr(axelrod, strategy_str)()
                 for strategy_str in players
             ]
-            tournament_runner = axelrod.Tournament(strategies)
+            tournament_runner = axelrod.Tournament(
+                players=strategies,
+                turns=self.tournament_definition.turns,
+                repetitions=self.tournament_definition.repetitions,
+                noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
             results = [
@@ -103,6 +108,9 @@ class TournamentDefinition(models.Model):
     name = CharField(max_length=255)
     created = DateTimeField(auto_now_add=True, editable=False)
     last_updated = DateTimeField(auto_now=True, editable=False)
+    turns = IntegerField()
+    repetitions = IntegerField()
+    noise = FloatField()
     players = TextField()
 
     class Meta:
@@ -114,8 +122,5 @@ class TournamentDefinition(models.Model):
     def get_absolute_url(self):
         return reverse('core_tournamentdefinition_detail', args=(self.id,))
 
-
     def get_update_url(self):
         return reverse('core_tournamentdefinition_update', args=(self.id,))
-
-
