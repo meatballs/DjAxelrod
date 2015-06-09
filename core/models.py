@@ -71,7 +71,7 @@ class Tournament(models.Model):
                 players=strategies,
                 turns=self.tournament_definition.turns,
                 repetitions=self.tournament_definition.repetitions,
-                noise=self.tournament_definitions.noise)
+                noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
             results = [
