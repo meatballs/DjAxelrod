@@ -68,5 +68,10 @@ class TournamentUpdateView(UpdateView):
         return reverse('core_tournament_list')
 
 
+class TournamentResultsView(DetailView):
+    model = Tournament
+    template_name = "core/tournament_results.html"
+
+
 class GraphView(TemplateView):
     template_name = "core/graph_view.html"
