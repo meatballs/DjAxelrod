@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
     'rest_framework',
+    'crispy_forms',
     'core',
     'djaxelrod',
 ]
@@ -57,6 +58,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 WSGI_APPLICATION = 'djaxelrod.wsgi.application'
 
