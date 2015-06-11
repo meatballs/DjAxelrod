@@ -10,11 +10,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from djaxelrod import tasks
 from .models import Tournament, TournamentDefinition
-from .forms import TournamentForm, TournamentDefinitionForm
+from .forms import TournamentDefinitionForm
 
 
-class HomeView(TemplateView):
-    template_name = 'core/home.html'
+class HomeView(ListView):
+    model = Tournament
+    template_name = 'core/tournament_list.html'
 
 
 class TournamentListView(ListView):
