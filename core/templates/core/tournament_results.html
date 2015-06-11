@@ -7,6 +7,8 @@
     <div>Noise: {{ object.tournament_definition.noise}}</div>
 	{% if object.status == 2 %}
         <div>Results: {{ object.results }}</div>
+    {% else %}
+        {{ object.get_status_display }}
     {% endif %}
 </div>
 {% endblock %}
