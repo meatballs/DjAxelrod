@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -61,12 +62,13 @@ class Tournament(models.Model):
 
             start = datetime.now()
 
-            players = self.tournament_definition.players.split(',')
+            players = json.loads(self.tournament_definition.players)
 
-            strategies = [
-                getattr(axelrod, strategy_str)()
-                for strategy_str in players
-            ]
+            strategies = []
+            for strategy_str, number_of_players in players.items():
+                for i in range(0, number_of_players):
+                    strategies.append(getattr(axelrod, strategy_str)())
+
             tournament_runner = axelrod.Tournament(
                 players=strategies,
                 turns=self.tournament_definition.turns,
@@ -74,17 +76,15 @@ class Tournament(models.Model):
                 noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
-            results = [
+            self.results = [
                 (name, [])
                 for name in result_set.ranked_names
             ]
             for irep in range(result_set.repetitions):
-                for rank in result_set.ranking:
-                    results[rank][1].append(
-                        result_set.normalised_scores[rank][irep]
+                for irank in result_set.ranking:
+                    self.results[irank][1].append(
+                        result_set.normalised_scores[irank][irep]
                     )
-
-            self.results = dict(results)
 
             end = datetime.now()
             duration = (end - start).seconds

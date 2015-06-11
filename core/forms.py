@@ -1,3 +1,4 @@
+import json
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -10,7 +11,7 @@ ALL_STRATEGIES = (
     strategies.cheating_strategies
 )
 
-ALL_STRATEGY_NAMES = [s.__name__.lower() for s in ALL_STRATEGIES]
+ALL_STRATEGY_NAMES = [s.__name__ for s in ALL_STRATEGIES]
 
 
 class TournamentForm(forms.ModelForm):
@@ -20,13 +21,6 @@ class TournamentForm(forms.ModelForm):
 
 
 class TournamentDefinitionForm(forms.ModelForm):
-    turns = forms.IntegerField(initial=200)
-    repetitions = forms.IntegerField(initial=10)
-    noise = forms.FloatField(
-        initial=0,
-        widget=forms.NumberInput(attrs={'step': "0.01"})
-    )
-
     strategy_fields = ALL_STRATEGY_NAMES
 
     class Meta:
@@ -35,11 +29,22 @@ class TournamentDefinitionForm(forms.ModelForm):
             'name',
             'turns',
             'repetitions',
-            'noise',
-            'players']
+            'noise']
+        widgets = {
+            'noise': forms.NumberInput(attrs={'step': "0.01"})
+        }
 
     def __init__(self, *args, **kwargs):
-        super(TournamentDefinitionForm, self).__init__(*args, **kwargs)
+        initial = {
+            'turns': 200,
+            'repetitions': 10,
+            'noise': 0
+        }
+        if 'initial' in kwargs:
+            initial.update(kwargs.pop('initial'))
+
+        super(TournamentDefinitionForm, self).__init__(
+            initial=initial, *args, **kwargs)
 
         for strategy in self.strategy_fields:
             self.fields[strategy] = forms.IntegerField(initial=0)
@@ -47,5 +52,19 @@ class TournamentDefinitionForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Start Tournament'))
 
-    def clean_players(self):
-        return ",".join(self.cleaned_data['players'])
+    def save(self, commit=True):
+        tournament_definition = super(TournamentDefinitionForm, self).save(
+            commit=False)
+
+        players = {
+            strategy: self.cleaned_data[strategy] for
+            strategy in self.strategy_fields
+            if self.cleaned_data[strategy]
+        }
+
+        tournament_definition.players = json.dumps(players)
+
+        if commit:
+            tournament_definition.save()
+
+        return tournament_definition
