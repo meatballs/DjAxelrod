@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
+    <p><a class="btn btn-primary btn" href="{% url 'core_tournament_create' %}" role="button">Create New Tournament &raquo;</a></p>
 	<ul>
 	{% for object in object_list %}
 	<li>
