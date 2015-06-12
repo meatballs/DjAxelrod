@@ -64,7 +64,10 @@ class TournamentDefinitionForm(forms.ModelForm):
             ),
             Fieldset(
                 'Players',
-                *self.strategy_fields
+                *[
+                    Field(s, template='strategy_field.html')
+                    for s in self.strategy_fields
+                ]
             ),
             Submit('submit', 'Start Tournament'),
         )
