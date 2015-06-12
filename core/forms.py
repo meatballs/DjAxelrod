@@ -1,7 +1,7 @@
 import json
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Layout, Submit, Fieldset, Field
 from axelrod import strategies
 from .models import Tournament, TournamentDefinition
 
@@ -50,7 +50,24 @@ class TournamentDefinitionForm(forms.ModelForm):
             self.fields[strategy] = forms.IntegerField(initial=0)
 
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Start Tournament'))
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-5'
+
+        self.helper.layout = Layout(
+            Fieldset(
+                'Config',
+                'name',
+                'turns',
+                'repetitions',
+                'noise'
+            ),
+            Fieldset(
+                'Players',
+                *self.strategy_fields
+            ),
+            Submit('submit', 'Start Tournament'),
+        )
 
     def save(self, commit=True):
         tournament_definition = super(TournamentDefinitionForm, self).save(
