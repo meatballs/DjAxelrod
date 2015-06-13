@@ -66,7 +66,7 @@ class Tournament(models.Model):
 
             strategies = []
             for strategy_str, number_of_players in players.items():
-                for i in range(0, number_of_players):
+                for i in range(0, int(number_of_players or 0)):
                     strategies.append(getattr(axelrod, strategy_str)())
 
             tournament_runner = axelrod.Tournament(

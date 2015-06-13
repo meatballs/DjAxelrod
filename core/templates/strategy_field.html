@@ -1,0 +1,8 @@
+{% load crispy_forms_field %}
+
+<div class="col-lg-3">
+	<div class="controls {{ field_class }}">
+		{% crispy_field field %}
+	</div>
+	<button type="button" class="btn strategy-button" data-for="{{ field.id_for_label }}">{{ field.label }}</button>
+</div>

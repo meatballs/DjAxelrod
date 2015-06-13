@@ -47,12 +47,11 @@ class TournamentDefinitionForm(forms.ModelForm):
             initial=initial, *args, **kwargs)
 
         for strategy in self.strategy_fields:
-            self.fields[strategy] = forms.IntegerField(initial=0)
+            self.fields[strategy] = forms.CharField(initial=0)
 
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-5'
+        self.helper.field_class = 'col-lg-3'
 
         self.helper.layout = Layout(
             Fieldset(
@@ -67,7 +66,8 @@ class TournamentDefinitionForm(forms.ModelForm):
                 *[
                     Field(s, template='strategy_field.html')
                     for s in self.strategy_fields
-                ]
+                ],
+                css_class="row"
             ),
             Submit('submit', 'Start Tournament'),
         )
