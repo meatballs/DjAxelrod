@@ -1,13 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <p><a class="btn btn-primary btn" href="{% url 'core_tournament_create' %}" role="button">Create New Tournament &raquo;</a></p>
-	<ul>
-	{% for object in object_list %}
-	<li>
-		<a href="{% url 'core_tournament_results' object.id %}" name="object.tournament_definition.name">{{ object.tournament_definition.name }}</a> ({{ object.last_updated }} - {{ object.get_status_display }})
-	</li>
+  <p><a class="btn btn-primary btn" href="{% url 'core_tournament_create' %}" role="button">Create New Tournament &raquo;</a></p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Status</th>
+				<th>Name</th>
+				<th>Created</th>
+			</tr>
+		</thead>
+    {% for object in object_list %}
+  <tbody>
+    <tr>
+  	<td>{{ object.get_status_display }}</td>
+		<td>
+		<a href="{% url 'core_tournament_detail' object.id %}" name="object.tournament_definition.name">
+			{{ object.tournament_definition.name }}</a></td>
+		<td>{{ object.created|timesince }} ago</td>
+    </tr>
+  <tbody>
 	{% endfor %}
-	</ul>
+</table>
 </div>
 {% endblock %}

@@ -32,7 +32,12 @@ urlpatterns = patterns(
         name='core_tournament_detail'
     ),
     url(
-        r'^tournament/(?P<pk>\d+)/$',
+        r'^tournament/(?P<pk>\S+)/results/$',
+        TournamentResultsView.as_view(),
+        name='core_tournament_results'
+    ),
+    url(
+        r'^tournament/(?P<pk>\S+)/$',
         TournamentUpdateView.as_view(),
         name='core_tournament_update'
     ),

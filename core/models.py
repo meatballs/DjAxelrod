@@ -48,6 +48,16 @@ class Tournament(models.Model):
     def get_update_url(self):
         return reverse('core_tournament_update', args=(self.id,))
 
+    def get_results_url(self):
+        return reverse('core_tournament_results', args=(self.id,))
+
+    def to_json(self):
+        json_results = []
+        if self.results:
+            for player,scores in self.results.iteritems():
+                json_results.append({"player": player, "scores": scores})
+        return {'results': json_results}
+
     def run(self):
 
         if self.status != Tournament.PENDING:

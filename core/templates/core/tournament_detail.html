@@ -2,14 +2,13 @@
 {% block content %}
 <div class="container">
 
-	<table>
-	<tr><td>name</td><td>{{ object.tournament_definition.name }}</td></tr>
-	<tr><td>players</td><td>{{ object.tournament_definition.players }}</td></tr>
-	<tr><td>created</td><td>{{ object.created }}</td></tr>
-	<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-	<tr><td>status</td><td>{{ object.get_status_display }}</td></tr>
+	<table class="table">
+	<tr><th>Name</th><td>{{ object.tournament_definition.name }}</td></tr>
+	<tr><th>Players</th><td>{{ object.tournament_definition.players }}</td></tr>
+	<tr><th>Created</th><td>{{ object.created|timesince }} ago</td></tr>
+	<tr><th>Status</th><td>{{ object.get_status_display }}</td></tr>
 	</table>
 
-	<a href="{% url 'core_tournament_update' object.tournament_definition.id %}">Edit Tournament</a>
+	<div class="tournament_results_vis" data-tournament-results-url="{{ tournament.get_results_url }}"></div>
 </div>
 {% endblock %}
