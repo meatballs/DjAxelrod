@@ -4,9 +4,7 @@ from .views import (
     TournamentListView,
     TournamentDetailView,
     TournamentCreateView,
-    TournamentUpdateView,
     TournamentResultsView,
-    GraphView,
 )
 
 urlpatterns = patterns(
@@ -27,28 +25,13 @@ urlpatterns = patterns(
         name='core_tournament_create'
     ),
     url(
-        r'^tournament/(?P<pk>\d+)/edit/$',
-        TournamentDetailView.as_view(),
-        name='core_tournament_detail'
-    ),
-    url(
-        r'^tournament/(?P<pk>\S+)/results/$',
-        TournamentResultsView.as_view(),
-        name='core_tournament_results'
-    ),
-    url(
-        r'^tournament/(?P<pk>\S+)/$',
-        TournamentUpdateView.as_view(),
-        name='core_tournament_update'
-    ),
-    url(
         r'^tournament/(?P<pk>\d+)/results/$',
         TournamentResultsView.as_view(),
         name='core_tournament_results'
     ),
     url(
-        r'^graph_view/$',
-        GraphView.as_view(),
-        name='core_graph_view'
+        r'^tournament/(?P<pk>\d+)/$',
+        TournamentDetailView.as_view(),
+        name='core_tournament_detail'
     ),
 )

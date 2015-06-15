@@ -69,16 +69,3 @@ class TournamentResultsView(TournamentDetailView):
         """
         tournament = self.get_object(self.get_queryset())
         return JsonResponse(tournament.to_json())
-
-
-class TournamentUpdateView(UpdateView):
-    model = TournamentDefinition
-    form_class = TournamentDefinitionForm
-    template_name = 'core/tournament_form.html'
-
-    def get_success_url(self):
-        return reverse('core_tournament_list')
-
-
-class GraphView(TemplateView):
-    template_name = "core/graph_view.html"
