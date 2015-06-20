@@ -4,7 +4,6 @@ var display_results = function(el) {
     var svg;
     var container;
     var results_url = $(el).attr('data-tournament-results-url');
-    var cheatingCsvFile = '/static/cheating_results.csv';
 
     // get the size of the visualisation element
     var visEl = $(el).get('0');
@@ -99,15 +98,7 @@ var display_results = function(el) {
     // initialise the visualisation
     var init_plot = function() {
 
-        // read the cheaters names from the results file
-        d3.csv(cheatingCsvFile, function(error, data) {
-            // extract the list of cheating players
-            cheaters = data.map(function(d) {
-                return d.player;
-            });
-        });
-
-        // create the svg element to hold 
+        // create the svg element to hold
         // all the visualisation elements
         svg = d3.select($(el).get(0))
             .append('svg')
@@ -207,7 +198,8 @@ var display_results = function(el) {
 
         d3.json(results_url, function(error, json) {
 
-            data = json.results
+            data = json.results;
+            cheaters = json.meta.cheating_strategies;
 
             // extract the list of players
             players = data.map(function(d) {

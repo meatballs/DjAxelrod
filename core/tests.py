@@ -3,7 +3,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
-from .models import Tournament, TournamentDefinition
+from .models import Tournament, TournamentDefinition, CHEATING_NAMES
 
 
 def create_tournament(**kwargs):
@@ -69,14 +69,10 @@ class TournamentViewTest(TestCase):
         results_response = self.client.get(results_url)
         self.assertEqual(results_response.status_code, 200)
 
-        self.assertJSONEqual(results_response.content, {'results': []})
-
-    def test_update_tournament(self):
-        tournament = create_tournament()
-        data = {
-            "status": Tournament.PENDING,
-            "tournament_definition": create_tournamentdefinition().id,
+        expected_json = {
+            'results': [],
+            'meta': {
+                'cheating_strategies': CHEATING_NAMES
+            }
         }
-        url = reverse('core_tournament_update', args=[tournament.id])
-        response = self.client.post(url, data, follow=True)
-        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(results_response.content, expected_json)

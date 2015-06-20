@@ -13,6 +13,9 @@ from jsonfield import JSONField
 import axelrod
 
 
+CHEATING_NAMES = [strategy.name for strategy in axelrod.cheating_strategies]
+
+
 class Tournament(models.Model):
 
     PENDING = 0
@@ -56,7 +59,15 @@ class Tournament(models.Model):
         if self.results:
             for player,scores in self.results.iteritems():
                 json_results.append({"player": player, "scores": scores})
-        return {'results': json_results}
+
+        results = {
+            "results": json_results,
+            "meta": {
+                "cheating_strategies": CHEATING_NAMES
+            }
+        }
+
+        return results
 
     def run(self):
 
