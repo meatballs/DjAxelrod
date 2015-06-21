@@ -1,8 +1,41 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load axelrodtags %}
+
 {% block content %}
 <div class="container">
 	<h1>Create a new tournament</h1>
-	{% crispy form form.helper %}
+	<div class="row">
+		<form class="form-horizontal" method="post">{% csrf_token %}
+			{{ form.non_field_errors }}
+			<fieldset>
+			{% for field in form %}
+				{% if field.name not in form.strategy_fields %}
+					<div class="form-group">
+						{{ field.errors }}
+						<label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+						<div class="col-sm-10">
+							<input type="{% if field.name in "noise,turns,repetitions" %}number{% else %}text{% endif %}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}"{% if field.name == "noise" %} step=0.01{% endif %}>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+			</fieldset>
+			<fieldset>
+			<legend>Players</legend>
+			{% for field in form %}
+				{% if field.name in form.strategy_fields %}
+					{{ field.errors }}
+					<div class="strategy-field">
+						<input type="number" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}">
+						<label for="{{ field.id_for_label }}">
+							<button type="button" class="btn btn-default strategy-button" data-for="{{ field.id_for_label }}">{{ field.label }}</button>
+						</label>
+					</div>
+				{% endif %}
+			{% endfor %}				
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Create tournament</button>
+		</form>
+	</div>
 </div>
 {% endblock %}

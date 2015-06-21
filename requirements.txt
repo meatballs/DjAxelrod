@@ -11,4 +11,3 @@ celery[redis]==3.1.18
 python-social-auth==0.2.10
 requests==2.7.0
 jsonfield==1.0.3
-django-crispy-forms==1.4.0
