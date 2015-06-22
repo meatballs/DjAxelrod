@@ -210,6 +210,7 @@ var display_results = function(el) {
             var results = []
             $.each(data, function(i, d){
                 d.scores = d.scores.map(function(s) { return +s/(200 * (players.length-1)); });
+                d.scores = d.scores.sort();
             });
 
             results = data;
