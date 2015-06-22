@@ -11,7 +11,6 @@ from django.db.models import (
 )
 from jsonfield import JSONField
 import axelrod
-import math
 
 
 CHEATING_NAMES = [strategy.name for strategy in axelrod.cheating_strategies]
