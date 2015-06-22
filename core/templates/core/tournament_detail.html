@@ -1,15 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
+    <div class="row">
+        <div class="col-xs-1"><strong>Name</strong></div><div class="col-xs-10">{{ object.tournament_definition.name }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1"><strong>Turns</strong></div><div class="col-xs-1">{{ object.tournament_definition.turns }}</div>
+        <div class="col-xs-1"><strong>Repetitions</strong></div><div class="col-xs-1">{{ object.tournament_definition.repetitions }}</div>
+        <div class="col-xs-1"><strong>Noise</strong></div><div class="col-xs-1">{{ object.tournament_definition.noise }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1"><strong>Created</strong></div><div class="col-xs-3">{{ object.created|timesince }}</div>
+        <div class="col-xs-1"><strong>Status</strong></div><div class="col-xs-1">{{ object.get_status_display }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4"><a href="{% url 'core_tournament_results' object.id %}">Raw results data</a></div>
+    </div>
+</div>
 
-	<table>
-	<tr><td>name</td><td>{{ object.tournament_definition.name }}</td></tr>
-	<tr><td>players</td><td>{{ object.tournament_definition.players }}</td></tr>
-	<tr><td>created</td><td>{{ object.created }}</td></tr>
-	<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-	<tr><td>status</td><td>{{ object.get_status_display }}</td></tr>
-	</table>
-
-	<a href="{% url 'core_tournament_update' object.tournament_definition.id %}">Edit Tournament</a>
+<div class="container">
+	<div class="tournament_results_vis" data-tournament-results-url="{{ tournament.get_results_url }}"></div>
 </div>
 {% endblock %}

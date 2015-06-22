@@ -3,7 +3,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
-from .models import Tournament, TournamentDefinition
+from .models import Tournament, TournamentDefinition, CHEATING_NAMES
 
 
 def create_tournament(**kwargs):
@@ -19,6 +19,9 @@ def create_tournamentdefinition(**kwargs):
     defaults = {}
     defaults["name"] = "name"
     defaults["players"] = "players"
+    defaults["noise"] = 1.0
+    defaults["repetitions"] = 10
+    defaults["turns"] = 1
     defaults.update(**kwargs)
     return TournamentDefinition.objects.create(**defaults)
 
@@ -45,8 +48,6 @@ class TournamentViewTest(TestCase):
         url = reverse('core_tournament_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        edit_url = reverse('core_tournament_update', args=[tournament.id])
-        self.assertIn(edit_url, response.content)
 
     def test_create_tournament(self):
         url = reverse('core_tournament_create')
@@ -63,12 +64,15 @@ class TournamentViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_update_tournament(self):
-        tournament = create_tournament()
-        data = {
-            "status": Tournament.PENDING,
-            "tournament_definition": create_tournamentdefinition().id,
+        # Test results json
+        results_url = reverse('core_tournament_results', args=[tournament.id])
+        results_response = self.client.get(results_url)
+        self.assertEqual(results_response.status_code, 200)
+
+        expected_json = {
+            'results': [],
+            'meta': {
+                'cheating_strategies': CHEATING_NAMES
+            }
         }
-        url = reverse('core_tournament_update', args=[tournament.id])
-        response = self.client.post(url, data, follow=True)
-        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(results_response.content, expected_json)
