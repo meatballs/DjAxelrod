@@ -14,6 +14,9 @@ from jsonfield import JSONField
 import axelrod
 
 
+CHEATING_NAMES = [strategy.name for strategy in axelrod.cheating_strategies]
+
+
 class Tournament(models.Model):
 
     PENDING = 0
@@ -49,6 +52,25 @@ class Tournament(models.Model):
     def get_update_url(self):
         return reverse('core_tournament_update', args=(self.id,))
 
+    def get_results_url(self):
+        return reverse('core_tournament_results', args=(self.id,))
+
+    def to_json(self):
+        json_results = []
+        if self.results:
+            for (player, scores) in self.results:
+                json_results.append({"player": player, "scores": scores})
+
+        results = {
+            "results": json_results,
+            "meta": {
+                "definition": self.tournament_definition.to_json(),
+                "cheating_strategies": CHEATING_NAMES
+            }
+        }
+
+        return results
+
     def run(self):
 
         if self.status != Tournament.PENDING:
@@ -77,14 +99,9 @@ class Tournament(models.Model):
             result_set = tournament_runner.play()
 
             self.results = [
-                (name, [])
-                for name in result_set.ranked_names
+                (players[rank], result_set.normalised_scores[rank])
+                for rank in result_set.ranking
             ]
-            for irep in range(result_set.repetitions):
-                for irank in result_set.ranking:
-                    self.results[irank][1].append(
-                        result_set.normalised_scores[irank][irep]
-                    )
 
             end = datetime.now()
             duration = (end - start).seconds
@@ -124,3 +141,13 @@ class TournamentDefinition(models.Model):
 
     def get_update_url(self):
         return reverse('core_tournamentdefinition_update', args=(self.id,))
+
+    def to_json(self):
+
+        definition = {
+            "turns": self.turns,
+            "repetitions": self.repetitions,
+            "noise": self.noise,
+        }
+
+        return definition

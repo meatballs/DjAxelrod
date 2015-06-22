@@ -36,8 +36,7 @@
                 <a type="submit" class="navbar-btn btn btn-success" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login</a>
             {% endif %}
           </div>
-        </div><!--/.navbar-collapse -->
-      </div>
+      </div><!--/.navbar-collapse -->
     </nav>
 
     {% block content %}{% endblock %}

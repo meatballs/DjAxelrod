@@ -1,12 +1,12 @@
-(function() {
+var display_results = function(el) {
 
     // the visualisation
     var svg;
     var container;
-    var cheatingCsvFile = '/static/cheating_results.csv';
+    var results_url = $(el).attr('data-tournament-results-url');
 
     // get the size of the visualisation element
-    var visEl = document.getElementById('vis');
+    var visEl = $(el).get('0');
     if (!visEl) {
         return;
     }
@@ -54,7 +54,7 @@
 
     // function for handling zoom event
     var zoom_handler = function() {
-        
+
         svg.select('.y.axis')
             .transition()
             .call(y_axis);
@@ -97,18 +97,10 @@
 
     // initialise the visualisation
     var init_plot = function() {
-        
-        // read the cheaters names from the results file
-        d3.csv(cheatingCsvFile, function(error, data) {
-            // extract the list of cheating players
-            cheaters = data.map(function(d) {
-                return d.player;
-            });
-        });
 
-        // create the svg element to hold 
+        // create the svg element to hold
         // all the visualisation elements
-        svg = d3.select('#vis')
+        svg = d3.select($(el).get(0))
             .append('svg')
             .attr('width', width)
             .attr('height', height)
@@ -154,7 +146,7 @@
           .attr("x", 0 - (height/2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Mean score per game over 200 rounds repeated 50 times");
+          .text("Mean score per game");
 
     }
 
@@ -168,7 +160,7 @@
             .attr('stroke-width', 0.5)
             .attr('fill', 'none')
             .attr('class', 'outlier')
-            .style('opacity', 0);            
+            .style('opacity', 0);
     }
 
     var reset = function() {
@@ -183,7 +175,7 @@
         // reset x_scale from player name to width
         x_scale = d3.scale.ordinal()
             .rangeRoundBands([padding.left, width-padding.right], 0.5, 0.4);
-        
+
         // reset x_axis
         x_axis = d3.svg.axis()
             .scale(x_scale)
@@ -193,18 +185,21 @@
         y_axis = d3.svg.axis()
             .scale(y_scale)
             .orient('left');
-        
+
         // reinitialise plot
         init_plot();
 
         // load the currently selected results set
-        load_results(selected);        
+        load_results(selected);
     }
 
     // load results from the specified file
     var load_results = function(results) {
-        
-        d3.csv("/static/" + results + '.csv', function(error, data) {
+
+        d3.json(results_url, function(error, json) {
+
+            data = json.results;
+            cheaters = json.meta.cheating_strategies;
 
             // extract the list of players
             players = data.map(function(d) {
@@ -212,12 +207,9 @@
             });
 
             // coerce data into a proper format - array of numerical scores
-            data.forEach(function(d){
-                var temp = d.scores.replace('[', '')
-                temp = temp.replace(']', '')
-                scores = temp.split(',')
-                d.scores = scores.map(function(s) { return +s/(200 * (players.length-1)); });
-                d.scores = d.scores.sort();
+            var results = []
+            $.each(data, function(i, d){
+                d.scores = d.scores.map(function(s) { return +s/(200 * (players.length-1)); });
             });
 
             results = data;
@@ -231,7 +223,7 @@
                 return d3.median(d.scores);
             });
 
-            // set the scale domain values 
+            // set the scale domain values
             colour_scale.domain(medians);
             cheater_scale.domain(medians);
             y_scale.domain([min, max]);
@@ -246,7 +238,7 @@
 
     // function to draw a box_plot of the results
     var draw_plot = function(result_set) {
-    
+
         // remove any existing box-and-whisker plots
         container.selectAll('.box')
             .style("opacity", 0)
@@ -283,11 +275,11 @@
             })
             .attr("fill", function(d) {
                 if(cheaters.indexOf(d.player) == -1) {
-                    return colour_scale(d3.median(d.scores));    
+                    return colour_scale(d3.median(d.scores));
                 } else {
-                    return cheater_scale(d3.median(d.scores));    
+                    return cheater_scale(d3.median(d.scores));
                 }
-                
+
             })
             .attr("stroke", function(d) {
                 if(cheaters.indexOf(d.player) == -1) {
@@ -297,7 +289,7 @@
                 }
             })
             .style('opacity', 0);
-        
+
         // draw a line for the median for each player
         box
             .append('path')
@@ -383,15 +375,15 @@
 
         boxes.selectAll('.lower-whisker')
             .transition()
-            .duration(transition_duration)                
+            .duration(transition_duration)
             .style('opacity', 1);
 
         boxes.selectAll('.outlier')
             .transition()
-            .duration(transition_duration)                
+            .duration(transition_duration)
             .style('opacity', 1);
 
-        // fade out and remove any boxes 
+        // fade out and remove any boxes
         // that don't have data
         // (there shouldn't be any)
         boxes
@@ -400,7 +392,7 @@
             .duration(transition_duration)
             .style('opacity', 0)
             .remove();
-          
+
         // update the axes
         svg.select('.x.axis')
             .transition()
@@ -431,4 +423,11 @@
     init_plot();
     load_results('all_results');
 
-})();
+};
+
+
+$(document).ready(function() {
+	$('[data-tournament-results-url]').each(function(i, el){
+      display_results(el);
+  });
+});

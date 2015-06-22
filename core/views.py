@@ -8,13 +8,15 @@ from django.views.generic import (
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.http import JsonResponse
 from djaxelrod import tasks
 from .models import Tournament, TournamentDefinition
-from .forms import TournamentForm, TournamentDefinitionForm
+from .forms import TournamentDefinitionForm
 
 
-class HomeView(TemplateView):
-    template_name = 'core/home.html'
+class HomeView(ListView):
+    model = Tournament
+    template_name = 'core/tournament_list.html'
 
 
 class TournamentListView(ListView):
@@ -59,14 +61,11 @@ class TournamentDetailView(DetailView):
     queryset = Tournament.objects.select_related('tournament_definition')
 
 
-class TournamentUpdateView(UpdateView):
-    model = TournamentDefinition
-    form_class = TournamentDefinitionForm
-    template_name = 'core/tournament_form.html'
+class TournamentResultsView(TournamentDetailView):
 
-    def get_success_url(self):
-        return reverse('core_tournament_list')
-
-
-class GraphView(TemplateView):
-    template_name = "core/graph_view.html"
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a JSON responseof the tournament results
+        """
+        tournament = self.get_object(self.get_queryset())
+        return JsonResponse(tournament.to_json())
