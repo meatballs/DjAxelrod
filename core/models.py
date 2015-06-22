@@ -63,6 +63,7 @@ class Tournament(models.Model):
         results = {
             "results": json_results,
             "meta": {
+                "definition": self.tournament_definition.to_json(),
                 "cheating_strategies": CHEATING_NAMES
             }
         }
@@ -145,3 +146,13 @@ class TournamentDefinition(models.Model):
 
     def get_update_url(self):
         return reverse('core_tournamentdefinition_update', args=(self.id,))
+
+    def to_json(self):
+
+        definition = {
+            "turns": self.turns,
+            "repetitions": self.repetitions,
+            "noise": self.noise,
+        }
+
+        return definition
