@@ -1,14 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-
-	<table class="table">
+    <div class="row">
+        <div class="col-xs-1"><strong>Name</strong></div><div class="col-xs-10">{{ object.tournament_definition.name }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1"><strong>Turns</strong></div><div class="col-xs-1">{{ object.tournament_definition.turns }}</div>
+        <div class="col-xs-1"><strong>Repetitions</strong></div><div class="col-xs-1">{{ object.tournament_definition.repetitions }}</div>
+        <div class="col-xs-1"><strong>Noise</strong></div><div class="col-xs-1">{{ object.tournament_definition.noise }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1"><strong>Created</strong></div><div class="col-xs-3">{{ object.created|timesince }}</div>
+        <div class="col-xs-1"><strong>Status</strong></div><div class="col-xs-1">{{ object.get_status_display }}</div>
+    </div>
+</div>
+	<!-- <table class="table">
 	<tr><th>Name</th><td>{{ object.tournament_definition.name }}</td></tr>
-	<tr><th>Players</th><td>{{ object.tournament_definition.players }}</td></tr>
+	<tr><th>Turns</th><td>{{ object.tournament_definition.turns }}</td>
+    <th>Repetitions</th><td>{{ object.tournament_definition.repetitions }}</td>
+    <th>Noise</th><td>{{ object.tournament_definition.noise }}</td></tr>
 	<tr><th>Created</th><td>{{ object.created|timesince }} ago</td></tr>
 	<tr><th>Status</th><td>{{ object.get_status_display }}</td></tr>
-	</table>
+	</table> -->
 
+<div class="container">
 	<div class="tournament_results_vis" data-tournament-results-url="{{ tournament.get_results_url }}"></div>
 </div>
 {% endblock %}
