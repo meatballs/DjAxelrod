@@ -97,14 +97,9 @@ class Tournament(models.Model):
             result_set = tournament_runner.play()
 
             results = [
-                (name, [])
-                for name in result_set.ranked_names
+                (player, result_set.normalised_scores[index])
+                for index, player in enumerate(players)
             ]
-            for irep in range(result_set.repetitions):
-                for rank in result_set.ranking:
-                    results[rank][1].append(
-                        result_set.normalised_scores[rank][irep]
-                    )
 
             self.results = dict(results)
 
