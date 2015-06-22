@@ -57,7 +57,7 @@ class Tournament(models.Model):
     def to_json(self):
         json_results = []
         if self.results:
-            for player,scores in self.results.iteritems():
+            for (player, scores) in self.results:
                 json_results.append({"player": player, "scores": scores})
 
         results = {
@@ -96,21 +96,10 @@ class Tournament(models.Model):
                 noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
-
-            # This fixes the problems where the scores did not match the player
-            # results = [
-            #     (player, result_set.normalised_scores[index])
-            #     for index, player in enumerate(players)
-            # ]
-
-            # This still has the correct scores with the correct players, but the
-            # order is not correct
-            results = [
+            self.results = [
                 (players[rank], result_set.normalised_scores[rank])
                 for rank in result_set.ranking
             ]
-
-            self.results = dict(results)
 
             end = datetime.now()
             duration = (end - start).seconds
