@@ -11,6 +11,7 @@ from django.db.models import (
 )
 from jsonfield import JSONField
 import axelrod
+import math
 
 
 CHEATING_NAMES = [strategy.name for strategy in axelrod.cheating_strategies]
@@ -96,9 +97,18 @@ class Tournament(models.Model):
                 noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
+
+            # This fixes the problems where the scores did not match the player
+            # results = [
+            #     (player, result_set.normalised_scores[index])
+            #     for index, player in enumerate(players)
+            # ]
+
+            # This still has the correct scores with the correct players, but the
+            # order is not correct
             results = [
-                (player, result_set.normalised_scores[index])
-                for index, player in enumerate(players)
+                (players[rank], result_set.normalised_scores[rank])
+                for rank in result_set.ranking
             ]
 
             self.results = dict(results)
