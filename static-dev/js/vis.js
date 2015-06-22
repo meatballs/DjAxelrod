@@ -146,7 +146,7 @@ var display_results = function(el) {
           .attr("x", 0 - (height/2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
-          .text("Mean score per game over 200 rounds repeated 50 times");
+          .text("Mean score per game");
 
     }
 
