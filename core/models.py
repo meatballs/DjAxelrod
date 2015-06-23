@@ -73,6 +73,12 @@ class Tournament(models.Model):
         return json_results
 
     def _uniquify_results(self, results):
+        """Ensures that each player has a unique label so that they appear
+        on the graph correctly.
+        Looks for repeat occurrences of a player and adds a count to their
+        label when it finds them
+        """
+
         checked_players = {}
         unique_results = []
 
