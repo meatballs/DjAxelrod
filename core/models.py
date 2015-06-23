@@ -58,10 +58,11 @@ class Tournament(models.Model):
     def to_json(self):
         json_results = []
         if self.results:
-            for (player, scores) in self.results:
+            unique_results = self._uniquify_results(self.results)
+            for (player, scores) in unique_results:
                 json_results.append({"player": player, "scores": scores})
 
-        results = {
+        json_results = {
             "results": json_results,
             "meta": {
                 "definition": self.tournament_definition.to_json(),
@@ -69,7 +70,22 @@ class Tournament(models.Model):
             }
         }
 
-        return results
+        return json_results
+
+    def _uniquify_results(self, results):
+        checked_players = {}
+        unique_results = []
+
+        for (player, scores) in results:
+            if player not in checked_players:
+                checked_players[player] = 1
+                unique_results.append((player, scores))
+            else:
+                checked_players[player] += 1
+                player_label = player + ' ' + str(checked_players[player])
+                unique_results.append((player_label, scores))
+
+        return unique_results
 
     def run(self):
 
