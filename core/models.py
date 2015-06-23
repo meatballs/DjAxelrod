@@ -98,10 +98,11 @@ class Tournament(models.Model):
                 noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
-            self.results = [
-                (tournament_runner.players[rank].name, result_set.normalised_scores[rank])
-                for rank in result_set.ranking
-            ]
+            self.results = []
+            for rank in result_set.ranking:
+                player = tournament_runner.players[rank].name
+                scores = result_set.normalised_scores[rank]
+                self.results.append((player, scores))
 
             end = datetime.now()
             duration = (end - start).seconds
