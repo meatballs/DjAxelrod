@@ -99,7 +99,7 @@ class Tournament(models.Model):
             result_set = tournament_runner.play()
 
             self.results = [
-                (players[rank], result_set.normalised_scores[rank])
+                (tournament_runner.players[rank].name, result_set.normalised_scores[rank])
                 for rank in result_set.ranking
             ]
 
