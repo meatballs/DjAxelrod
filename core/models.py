@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -57,10 +58,11 @@ class Tournament(models.Model):
     def to_json(self):
         json_results = []
         if self.results:
-            for (player, scores) in self.results:
+            unique_results = self._uniquify_results(self.results)
+            for (player, scores) in unique_results:
                 json_results.append({"player": player, "scores": scores})
 
-        results = {
+        json_results = {
             "results": json_results,
             "meta": {
                 "definition": self.tournament_definition.to_json(),
@@ -68,7 +70,28 @@ class Tournament(models.Model):
             }
         }
 
-        return results
+        return json_results
+
+    def _uniquify_results(self, results):
+        """Ensures that each player has a unique label so that they appear
+        on the graph correctly.
+        Looks for repeat occurrences of a player and adds a count to their
+        label when it finds them
+        """
+
+        checked_players = {}
+        unique_results = []
+
+        for (player, scores) in results:
+            if player not in checked_players:
+                checked_players[player] = 1
+                unique_results.append((player, scores))
+            else:
+                checked_players[player] += 1
+                player_label = player + ' ' + str(checked_players[player])
+                unique_results.append((player_label, scores))
+
+        return unique_results
 
     def run(self):
 
@@ -83,12 +106,13 @@ class Tournament(models.Model):
 
             start = datetime.now()
 
-            players = self.tournament_definition.players.split(',')
+            players = json.loads(self.tournament_definition.players)
 
-            strategies = [
-                getattr(axelrod, strategy_str)()
-                for strategy_str in players
-            ]
+            strategies = []
+            for strategy_str, number_of_players in players.items():
+                for i in range(0, int(number_of_players or 0)):
+                    strategies.append(getattr(axelrod, strategy_str)())
+
             tournament_runner = axelrod.Tournament(
                 players=strategies,
                 turns=self.tournament_definition.turns,
@@ -96,10 +120,11 @@ class Tournament(models.Model):
                 noise=self.tournament_definition.noise)
             result_set = tournament_runner.play()
 
-            self.results = [
-                (players[rank], result_set.normalised_scores[rank])
-                for rank in result_set.ranking
-            ]
+            self.results = []
+            for rank in result_set.ranking:
+                player = tournament_runner.players[rank].name
+                scores = result_set.normalised_scores[rank]
+                self.results.append((player, scores))
 
             end = datetime.now()
             duration = (end - start).seconds

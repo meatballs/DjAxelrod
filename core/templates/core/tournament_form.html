@@ -1,39 +1,41 @@
 {% extends "base.html" %}
+{% load axelrodtags %}
+
 {% block content %}
 <div class="container">
-
 	<h1>Create a new tournament</h1>
-	<form action="" method="post">
-		{% csrf_token %}
-		{{ form.non_field_errors }}
-		<div class="form-group">
-			<label for="{{ form.name.id_for_label }}">Name</label>
-			<input type="text" class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value }}" name="{{ form.name.html_name }}">
-			{{ form.name.errors }}
-		</div>
-        <div class="form-group">
-            <label for="{{ form.turns.id_for_label }}">Turns</label>
-            <input type="number" class="form-control" id="{{ form.turns.id_for_label }}" value="{{ form.turns.value }}" name="{{ form.turns.html_name }}">
-        </div>
-        <div class="form-group">
-            <label for="{{ form.repetitions.id_for_label }}">Repetitions</label>
-            <input type="number" class="form-control" id="{{ form.repetitions.id_for_label }}" value="{{ form.repetitions.value }}" name="{{ form.repetitions.html_name }}">
-        </div>
-        <div class="form-group">
-            <label for="{{ form.noise.id_for_label }}">Noise</label>
-            <input type="number" step="0.01" class="form-control" id="{{ form.noise.id_for_label }}" value="{{ form.noise.value }}" name="{{ form.noise.html_name }}">
-        </div>
-		<div class="form-group">
-			<label for="{{ form.players.id_for_label }}">Players</label>
-			<select multiple class="form-control" id="{{ form.players.id_for_label }}" name="{{ form.players.html_name }}">
-				{% for choice in form.players.field.choices %}
-				<option value="{{ choice.0 }}">{{ choice.1 }}</option>
-				{% endfor %}
-			</select>
-			{{ form.players.errors }}
-		</div>
-		<button type="submit" class="btn btn-default">Start Tournament</button>
-	</form>
-
+	<div class="row">
+		<form class="form-horizontal" method="post">{% csrf_token %}
+			{{ form.non_field_errors }}
+			<fieldset>
+			{% for field in form %}
+				{% if field.name not in form.strategy_fields %}
+					<div class="form-group">
+						{{ field.errors }}
+						<label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+						<div class="col-sm-10">
+							<input type="{% if field.name in "noise,turns,repetitions" %}number{% else %}text{% endif %}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}"{% if field.name == "noise" %} step=0.01{% endif %}>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+			</fieldset>
+			<fieldset>
+			<legend>Players</legend>
+			{% for field in form %}
+				{% if field.name in form.strategy_fields %}
+					{{ field.errors }}
+					<div class="strategy-field">
+						<input type="number" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}">
+						<label for="{{ field.id_for_label }}">
+							<button type="button" class="btn btn-default strategy-button" data-for="{{ field.id_for_label }}">{{ field.label }}</button>
+						</label>
+					</div>
+				{% endif %}
+			{% endfor %}				
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Create tournament</button>
+		</form>
+	</div>
 </div>
 {% endblock %}
