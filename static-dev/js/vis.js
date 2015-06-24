@@ -15,7 +15,7 @@
             height = visEl.clientHeight;
 
         // some padding around the visualisation
-        var padding = {'bottom': 170, 'left': 90, 'right': 40, 'top': 40};
+        var padding = {'bottom': 180, 'left': 100, 'right': 50, 'top': 50};
 
         // scale from median values to height
         var y_scale = d3.scale.linear()
