@@ -5,9 +5,10 @@ html, body {
 	height: 100%;
 
 }
+
 .tournament_results_vis {
     width: 100%;
-    height: 700px;
+    height: 100%;
 }
 #vis {
 	width: 100%;
@@ -34,4 +35,11 @@ html, body {
 			margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 		}
 	}
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
