@@ -13,7 +13,7 @@ from jsonfield import JSONField
 import axelrod
 
 
-CHEATING_NAMES = [strategy.name for strategy in axelrod.cheating_strategies]
+CHEATING_NAMES = [strategy.__name__ for strategy in axelrod.cheating_strategies]
 
 
 class Tournament(models.Model):

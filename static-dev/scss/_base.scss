@@ -7,9 +7,16 @@ html, body {
 }
 .tournament_results_vis {
     width: 100%;
-    height: 700px;
+    height: 600px;
 }
 #vis {
     width: 100%;
     height: 100%;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
