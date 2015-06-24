@@ -34,27 +34,35 @@
         // axes
         var x_axis = d3.svg.axis()
             .scale(x_scale)
+            .tickFormat(function(d){ return players[d]; })
             .orient('bottom');
 
         var y_axis = d3.svg.axis()
             .scale(y_scale)
             .orient('left');
 
-
         // how long transitions will last
         var transition_duration = 1000;
 
+        // data
+        var results;
+        // player names
+        var players;
+        var cheaters;
+
+        // set up zooming
+        var zoom = d3.behavior.zoom()
+            .scaleExtent([0, 10])
+            .on("zoom", zoom_handler)
+            .y(y_scale);
+
         //function for handling zoom event
-        var zoom_handler = function() {
+        function zoom_handler() {
 
             svg.select('.y.axis')
-                .transition()
-                .ease('quad')
                 .call(y_axis);
 
             svg.select('.x.axis')
-                .transition()
-                .ease('quad')
                 .attr('transform', 'translate(' + d3.event.translate[0] + ',' +(height-padding.bottom)+ ')')
                 .call(x_axis.scale(x_scale.rangeRoundBands([padding.left * d3.event.scale, (width-padding.right) * d3.event.scale],0.5 * d3.event.scale, 0.4 * d3.event.scale)));
 
@@ -62,7 +70,8 @@
                 .selectAll('text')
                 .style('text-anchor', 'end');
 
-            container.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
+            container
+                .attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         }
 
         // find the indexes of the whisker reach values
@@ -76,17 +85,6 @@
             while (d[--j] > (q3 + reach));    // find the first non-outlier
             return [i, j];                  // return the indexes
         }
-
-        var zoom = d3.behavior.zoom()
-            .scaleExtent([0, 10])
-            .on("zoom", zoom_handler)
-            .y(y_scale);
-
-        // data
-        var results;
-        // player names
-        var players;
-        var cheaters;
 
         // initialise the visualisation
         var init_plot = function() {
@@ -123,11 +121,6 @@
               .attr('class', 'x axis')
               .attr('transform', 'translate(0,' + (height-padding.bottom) + ')');
 
-            // rotate the x-axis labels
-            // svg.selectAll('.x.axis text')
-            //     .style('text-anchor', 'end')
-            //     .attr('transform', 'translate(-15,10)rotate(-90)');
-
             // add a y-axis and label
             svg.append("g")
               .attr("class", "y axis")
@@ -135,7 +128,7 @@
             .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 20 - padding.left)
-              .attr("x", 0 - (height/2))
+              .attr("x", 0 - (height/3))
               .attr("dy", "1em")
               .style("text-anchor", "middle")
               .text("Mean score per game");
@@ -168,10 +161,14 @@
                     return d.player;
                 });
 
+                // ensure individual players score arrays are sorted
+                // and add an id
                 data.forEach(function(d, i) {
                     d.scores = d.scores.sort();
                     d.id = i;
                 })
+
+                var ids = d3.range(0, players.length);
 
                 // calculate max and min values across all scores
                 var max = d3.max(data, function(d){ return d3.max(d.scores); });
@@ -186,9 +183,9 @@
                 colour_scale.domain(medians);
                 cheater_scale.domain(medians);
                 y_scale.domain([min, max]).nice();
-                x_scale.domain(players);
+                x_scale.domain(ids);
 
-                //zoom.y(y_scale);
+                zoom.y(y_scale);
 
                 // draw the visualisation
                 draw_plot(data);
@@ -208,6 +205,7 @@
             // reset x_axis
             x_axis = d3.svg.axis()
                 .scale(x_scale)
+                .tickFormat(function(d){ return players[d]; })
                 .orient('bottom');
 
             // reset y_axis
@@ -246,7 +244,7 @@
                 .append('rect')
                 .attr('class', 'quartiles')
                 .attr('x', function(d) {
-                    return x_scale(players[d.id])
+                    return x_scale(d.id)
                 })
                 .attr('width', x_scale.rangeBand())
                 .attr('y', function(d){
@@ -259,7 +257,7 @@
                     return y_scale(lower_quartile)-y_scale(upper_quartile);
                 })
                 .attr("fill", function(d) {
-                    if(cheaters.indexOf(d.player) == -1) {
+                    if(cheaters.indexOf(d.player) === -1) {
                         return colour_scale(d3.median(d.scores));
                     } else {
                         return cheater_scale(d3.median(d.scores));
@@ -267,11 +265,7 @@
 
                 })
                 .attr("stroke", function(d) {
-                    if(cheaters.indexOf(d.player) == -1) {
-                        return "blue";
-                    } else {
-                        return "green";
-                    }
+                    return cheaters.indexOf(d.player) === -1 ? 'blue' : 'green';
                 })
                 .style('opacity', 0);
 
@@ -282,7 +276,7 @@
                 .attr('d', function(d) {
                     var median = d3.median(d.scores);
                     var band_width = x_scale.rangeBand();
-                    var x_start = x_scale(players[d.id]);
+                    var x_start = x_scale(d.id);
                     var y = y_scale(median);
                     var path = "M " + x_start + " " + y + " L " + " " + (x_start+band_width) + " " + y;
                     return path;
@@ -301,7 +295,7 @@
                     var i = whisker_reach(d.scores, 1.5);
                     var reach = d.scores[i[1]];
                     var band_width = x_scale.rangeBand();
-                    var x_start = x_scale(players[d.id]);
+                    var x_start = x_scale(d.id);
                     var midpoint = x_start + (band_width/2);
 
                     if(i[1] < d.scores.length-1) {
@@ -329,7 +323,7 @@
                     var i = whisker_reach(d.scores, 1.5);
                     var reach = d.scores[i[0]];
                     var band_width = x_scale.rangeBand();
-                    var x_start = x_scale(players[d.id]);
+                    var x_start = x_scale(d.id);
                     var midpoint = x_start + (band_width/2);
                     if(i[0] > 0) {
                         for(var j = 0; j < i[0]; j++) {
@@ -389,7 +383,7 @@
                 .transition()
                 .attr('transform', 'translate(-15, 15)rotate(-90)')
                 .attr('fill', function(d){
-                    return cheaters.indexOf(d) === -1 ? 'blue' : 'green';
+                    return cheaters.indexOf(players[d]) === -1 ? 'blue' : 'green';
                 })
                 .style('text-anchor', 'end');
 
