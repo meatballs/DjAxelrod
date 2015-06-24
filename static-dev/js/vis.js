@@ -168,8 +168,6 @@
                     d.id = i;
                 })
 
-                var ids = d3.range(0, players.length);
-
                 // calculate max and min values across all scores
                 var max = d3.max(data, function(d){ return d3.max(d.scores); });
                 var min = d3.min(data, function(d){ return d3.min(d.scores); });
@@ -183,7 +181,7 @@
                 colour_scale.domain(medians);
                 cheater_scale.domain(medians);
                 y_scale.domain([min, max]).nice();
-                x_scale.domain(ids);
+                x_scale.domain(d3.range(0, players.length));
 
                 zoom.y(y_scale);
 
