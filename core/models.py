@@ -58,8 +58,7 @@ class Tournament(models.Model):
     def to_json(self):
         json_results = []
         if self.results:
-            unique_results = self._uniquify_results(self.results)
-            for (player, scores) in unique_results:
+            for (player, scores) in self.results:
                 json_results.append({"player": player, "scores": scores})
 
         json_results = {
@@ -71,27 +70,6 @@ class Tournament(models.Model):
         }
 
         return json_results
-
-    def _uniquify_results(self, results):
-        """Ensures that each player has a unique label so that they appear
-        on the graph correctly.
-        Looks for repeat occurrences of a player and adds a count to their
-        label when it finds them
-        """
-
-        checked_players = {}
-        unique_results = []
-
-        for (player, scores) in results:
-            if player not in checked_players:
-                checked_players[player] = 1
-                unique_results.append((player, scores))
-            else:
-                checked_players[player] += 1
-                player_label = player + ' ' + str(checked_players[player])
-                unique_results.append((player_label, scores))
-
-        return unique_results
 
     def run(self):
 
