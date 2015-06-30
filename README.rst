@@ -44,15 +44,6 @@ This step will take some time. It has to download the operating system and all t
 
 * Check to see if it's working by pointing your web browser to http://localhost:8000
 
-Note that the gulp server needs to be manually stopped to not use a up CPU
-resources::
-
-    vagrant ssh -c 'sudo stop gulp-server'
-
-You can start the vagrant machine and stop the gulp server by running::
-
-    vagrant up; vagrant ssh -c 'sudo stop gulp-server'
-
 Usage
 =====
 
