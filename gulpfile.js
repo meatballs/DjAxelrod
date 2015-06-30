@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sass   = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
-
+var watch = require('gulp-watch');
 
 var STATIC_DEV = "./static-dev/";
 var STATIC = './static/';
@@ -39,5 +39,5 @@ gulp.task('csv', function() {
 });
 
 gulp.task('default', ['sass', 'scripts', 'favicon', 'csv'], function() {
-    gulp.watch([STATIC_DEV + '**/*.scss', STATIC_DEV + '**/*.js', STATIC_DEV + '**/*.csv'], ['sass', 'scripts', 'csv']);
+    watch([STATIC_DEV + '**/*.scss', STATIC_DEV + '**/*.js', STATIC_DEV + '**/*.csv'], ['sass', 'scripts', 'csv']);
 });
